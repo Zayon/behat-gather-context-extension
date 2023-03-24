@@ -14,7 +14,7 @@ class Php74TypeDetector implements TypeDetector
     {
         if (PHP_VERSION_ID >= 80000) {
             throw new LogicException(
-                __METHOD__.' should only be called on PHP 7.4 and lower.' .
+                __METHOD__ . ' should only be called on PHP 7.4 and lower.' .
                 'Current version: ' . PHP_VERSION_ID
             );
         }

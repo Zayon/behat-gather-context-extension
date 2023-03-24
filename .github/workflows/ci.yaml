@@ -1,0 +1,92 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request: ~
+
+env:
+  CI: true
+
+jobs:
+  tests:
+    name: Behat tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.4, 8.0, 8.1, 8.2 ]
+        composer-mode: [ latest ]
+        include:
+
+          # 7.4 build with the lowest dependencies
+          - php: 7.4
+            composer-mode: lowest
+
+          # 7.4 build
+          - php: 7.4
+            composer-mode: latest
+
+          # 8.0 build
+          - php: 8.0
+            composer-mode: latest
+
+          # 8.1 build
+          - php: 8.1
+            composer-mode: latest
+
+          # 8.2 build
+          - php: 8.2
+            composer-mode: latest
+
+    steps:
+      -   uses: actions/checkout@v2
+
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: "${{ matrix.php }}"
+            coverage: none
+
+      -   name: Install the latest dependencies
+          if: matrix.composer-mode == 'latest'
+          run: composer update
+
+      -   name: Install the lowest dependencies
+          if: matrix.composer-mode == 'lowest'
+          run: composer update --prefer-lowest
+
+      -   name: Run tests (Behat)
+          run: ./vendor/bin/behat -f progress --strict
+
+  php-cs-fixer:
+    name: PHP CS Fixer
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          coverage: none
+
+      - name: Run PHPCS Fixer
+        run: make php-cs-fixer-check
+
+  phpstan:
+    name: phpstan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          coverage: none
+
+      - name: Run phpstan
+        run: make phpstan

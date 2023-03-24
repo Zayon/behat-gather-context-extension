@@ -1,25 +1,26 @@
+CI ?= false
 COMPOSER_HOME ?= ${HOME}/.config/composer
 COMPOSER_CACHE_DIR ?= ${HOME}/.cache/composer
 
-define docker-run-php
-	docker run --rm -it \
-		--user $(shell id -u):$(shell id -g) \
-		--env COMPOSER_HOME \
-		--env COMPOSER_CACHE_DIR \
-		--volume ${COMPOSER_HOME}:${COMPOSER_HOME} \
-		--volume ${COMPOSER_CACHE_DIR}:${COMPOSER_CACHE_DIR} \
-		--volume ./:/app \
-		--volume ./tools/composer-bin:/usr/bin/composer \
-		--workdir /app \
-		php:$(strip $(1))-cli-alpine $(2)
+define run-php
+	if [ "$(CI)" = true ]; then \
+		$(2); \
+	else \
+		docker run --rm -it \
+			--user $(shell id -u):$(shell id -g) \
+			--env COMPOSER_HOME \
+			--env COMPOSER_CACHE_DIR \
+			--volume ${COMPOSER_HOME}:${COMPOSER_HOME} \
+			--volume ${COMPOSER_CACHE_DIR}:${COMPOSER_CACHE_DIR} \
+			--volume ./:/app \
+			--volume ./tools/composer-bin:/usr/bin/composer \
+			--workdir /app \
+			php:$(strip $(1))-cli-alpine $(2); \
+	fi
 endef
 
 define run-composer
-	$(call docker-run-php, $(1), composer $(2))
-endef
-
-define composer-update
-	$(call run-composer, $(1), update $(2))
+	$(call run-php, $(1), composer $(2))
 endef
 
 define run-behat
@@ -39,14 +40,18 @@ composer: tools/composer-bin ## Wrapper for composer commands with docker
 ##  --
 
 php-cs-fixer: tools/php-cs-fixer/vendor/bin/php-cs-fixer ## Run php-cs-fixer
-	$(call docker-run-php, 8.2, tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config tools/php-cs-fixer/.php-cs-fixer.dist.php)
+	$(call run-php, 8.2, tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config tools/php-cs-fixer/.php-cs-fixer.dist.php -v)
 .PHONY: php-cs-fixer
+
+php-cs-fixer-check: tools/php-cs-fixer/vendor/bin/php-cs-fixer
+	$(call run-php, 8.2, tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config tools/php-cs-fixer/.php-cs-fixer.dist.php -v --dry-run)
+.PHONY: php-cs-fixer-check
 
 tools/php-cs-fixer/vendor/bin/php-cs-fixer:
 	$(call run-composer, 8.2, install --working-dir=tools/php-cs-fixer)
 
-phpstan: tools/phpstan/vendor/bin/phpstan ## Run phpstan
-	$(call docker-run-php, 8.2, tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.neon)
+phpstan: tools/phpstan/vendor/bin/phpstan vendor ## Run phpstan
+	$(call run-php, 8.2, tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.neon)
 .PHONY: phpstan
 
 tools/phpstan/vendor/bin/phpstan:
@@ -57,24 +62,27 @@ tools/phpstan/vendor/bin/phpstan:
 ##  -----------------
 
 composer-install-7.4-lowest: tools/composer-bin ## Install vendors in PHP 7.4 with lowest dependencies versions
-	$(call composer-update, 7.4, --prefer-lowest)
+	$(call run-composer, 7.4, update --prefer-lowest)
 .PHONY: composer-install-7.4-lowest
 
 composer-install-7.4: tools/composer-bin ## Install vendors in PHP 7.4
-	$(call composer-update, 7.4)
+	$(call run-composer, 7.4, update)
 .PHONY: composer-install-7.4
 
 composer-install-8.0: tools/composer-bin ## Install vendors in PHP 8.0
-	$(call composer-update, 8.0)
+	$(call run-composer, 8.0, update)
 .PHONY: composer-install-8.0
 
 composer-install-8.1: tools/composer-bin ## Install vendors in PHP 8.1
-	$(call composer-update, 8.1)
+	$(call run-composer, 8.1, update)
 .PHONY: composer-install-8.1
 
 composer-install-8.2: tools/composer-bin ## Install vendors in PHP 8.2
-	$(call composer-update, 8.2)
+	$(call run-composer, 8.2, update)
 .PHONY: composer-install-8.2
+
+vendor:
+	$(call run-composer, 8.2, update)
 
 ##  -----
 ##@ Tests
