@@ -41,7 +41,7 @@ class ContextGathererExtension implements Extension
     {
         if (PHP_VERSION_ID >= 80100) {
             $typeDetectorDefinition = new Definition(Php81TypeDetector::class, []);
-        } else if (PHP_VERSION_ID >= 80000) {
+        } elseif (PHP_VERSION_ID >= 80000) {
             $typeDetectorDefinition = new Definition(Php80TypeDetector::class, []);
         } else {
             $typeDetectorDefinition = new Definition(Php74TypeDetector::class, []);

@@ -39,7 +39,7 @@ composer: tools/composer-bin ## Wrapper for composer commands with docker
 ##  --
 
 php-cs-fixer: tools/php-cs-fixer/vendor/bin/php-cs-fixer
-	$(call docker-run-php, 8.2, tools/php-cs-fixer/vendor/bin/php-cs-fixer)
+	$(call docker-run-php, 8.2, tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config tools/php-cs-fixer/.php-cs-fixer.dist.php)
 .PHONY: php-cs-fixer
 
 tools/php-cs-fixer/vendor/bin/php-cs-fixer:

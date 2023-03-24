@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zayon\BehatGatherContextExtension\Tests\Behat\Contexts;
 
 use Behat\Behat\Context\Context;
@@ -68,7 +70,7 @@ class TestContext implements Context
                 '--strict',
                 '-vvv',
                 '--no-interaction',
-                '--lang=en'
+                '--lang=en',
             ],
             self::$workingDir
         );
@@ -81,7 +83,7 @@ class TestContext implements Context
      */
     public function itShouldPass(): void
     {
-        if (0 === $this->process->getExitCode()) {
+        if ($this->process->getExitCode() === 0) {
             return;
         }
 
@@ -96,7 +98,7 @@ class TestContext implements Context
      */
     public function itShouldFail(): void
     {
-        if (0 !== $this->process->getExitCode()) {
+        if ($this->process->getExitCode() !== 0) {
             return;
         }
 
@@ -117,7 +119,7 @@ class TestContext implements Context
     private static function findPhpBinary(): string
     {
         $phpBinary = (new PhpExecutableFinder())->find();
-        if (false === $phpBinary) {
+        if ($phpBinary === false) {
             throw new \RuntimeException('Unable to find the PHP executable.');
         }
 

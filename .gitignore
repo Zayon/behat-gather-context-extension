@@ -3,5 +3,6 @@ composer.lock
 tools/composer-bin
 tools/php-cs-fixer/vendor
 tools/php-cs-fixer/.php-cs-fixer.php
+tools/php-cs-fixer/.php-cs-fixer.cache
 .idea/*
 !.idea/runConfigurations
