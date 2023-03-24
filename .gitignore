@@ -2,7 +2,10 @@
 composer.lock
 tools/composer-bin
 tools/php-cs-fixer/vendor
+!tools/php-cs-fixer/composer.lock
 tools/php-cs-fixer/.php-cs-fixer.php
 tools/php-cs-fixer/.php-cs-fixer.cache
+tools/phpstan/vendor
+!tools/phpstan/composer.lock
 .idea/*
 !.idea/runConfigurations

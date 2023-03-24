@@ -38,12 +38,19 @@ composer: tools/composer-bin ## Wrapper for composer commands with docker
 ##@ QA
 ##  --
 
-php-cs-fixer: tools/php-cs-fixer/vendor/bin/php-cs-fixer
+php-cs-fixer: tools/php-cs-fixer/vendor/bin/php-cs-fixer ## Run php-cs-fixer
 	$(call docker-run-php, 8.2, tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config tools/php-cs-fixer/.php-cs-fixer.dist.php)
 .PHONY: php-cs-fixer
 
 tools/php-cs-fixer/vendor/bin/php-cs-fixer:
 	$(call run-composer, 8.2, install --working-dir=tools/php-cs-fixer)
+
+phpstan: tools/phpstan/vendor/bin/phpstan ## Run phpstan
+	$(call docker-run-php, 8.2, tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.neon)
+.PHONY: phpstan
+
+tools/phpstan/vendor/bin/phpstan:
+	$(call run-composer, 8.2, install --working-dir=tools/phpstan)
 
 ##  -----------------
 ##@ Composer installs
@@ -114,6 +121,6 @@ tools/composer-bin:
 .PHONY: help
 # See https://www.thapaliya.com/en/writings/well-documented-makefiles/
 help: ## Display this help
-	@awk 'BEGIN {FS = ":.* ##"; printf "\n\033[32;1m  Behat Gather Context Extension\n  ------------------------------\033[0m\n"} /^[%a-zA-Z_-]+:.* ## / { printf "  \033[33m%-25s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.* ##"; printf "\n\033[32;1m  Behat Gather Context Extension\n  ------------------------------\033[0m\n"} /^[%a-zA-Z0-9._-]+:.* ## / { printf "  \033[33m%-25s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ##@

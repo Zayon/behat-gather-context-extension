@@ -47,13 +47,11 @@ class TestContext implements Context
     /**
      * @Given /^a file named "([^"]*)" with:$/
      */
-    public function aFileNamedWith(string $filename, PyStringNode $content)
+    public function aFileNamedWith(string $filename, PyStringNode $content): void
     {
         $path = self::$workingDir . '/' . $filename;
 
         self::$filesystem->dumpFile($path, (string) $content);
-
-        return $path;
     }
 
     /**

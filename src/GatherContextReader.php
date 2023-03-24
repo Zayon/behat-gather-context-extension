@@ -29,7 +29,12 @@ final class GatherContextReader implements ContextReader
         $this->detector = $detector;
     }
 
-    /** @return Callee[] */
+    /**
+     * @param string $contextClass
+     *
+     * @return Callee[]
+     * @throws \ReflectionException
+     */
     public function readContextCallees(ContextEnvironment $environment, $contextClass): array
     {
         if (isset($this->cachedCallees[$contextClass])) {
@@ -40,6 +45,7 @@ final class GatherContextReader implements ContextReader
             self::$contextProperties[$contextClass] = [];
         }
 
+        /** @var class-string $contextClass */
         $properties = (new ReflectionClass($contextClass))->getProperties();
 
         foreach ($properties as $property) {
@@ -50,7 +56,12 @@ final class GatherContextReader implements ContextReader
                     continue;
                 }
 
-                if (in_array(Context::class, class_implements($type->getName()), true)) {
+                $implementedClasses = class_implements($type->getName());
+                if ($implementedClasses === false) {
+                    continue;
+                }
+
+                if (in_array(Context::class, $implementedClasses, true)) {
                     self::$contextProperties[$contextClass][] = new ContextProperty(
                         $property,
                         $type->getName()

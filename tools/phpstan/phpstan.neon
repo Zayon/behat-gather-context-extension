@@ -1,0 +1,14 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: max
+    paths:
+        - ./../../src
+        - ./../../tests
+    checkMissingIterableValueType: false
+
+    ignoreErrors:
+        -
+            message: '#Constant BEHAT_BIN_PATH not found#'
+            path: %currentWorkingDirectory%/tests/Behat/Contexts/TestContext.php
