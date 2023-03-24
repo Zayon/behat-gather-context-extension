@@ -1,0 +1,11 @@
+default:
+  gherkin:
+    cache: ~
+  autoload:
+    '': '%paths.base%/tests/Behat/Contexts'
+  suites:
+    default:
+      paths:
+        features: 'tests/Behat/features/'
+      contexts:
+        - Zayon\BehatGatherContextExtension\Tests\Behat\Contexts\TestContext

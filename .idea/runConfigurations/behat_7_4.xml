@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="behat 7.4" type="PhpBehatConfigurationType">
+    <BehatRunner configuration_file="$PROJECT_DIR$/behat.yml" scenario="" scope="Yml" use_alternative_configuration_file="true" />
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="php:7.4-cli-alpine" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="composer-install-7.4" run_configuration_type="MAKEFILE_TARGET_RUN_CONFIGURATION" />
+    </method>
+  </configuration>
+</component>

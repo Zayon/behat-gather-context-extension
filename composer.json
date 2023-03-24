@@ -1,0 +1,32 @@
+{
+    "name": "zayon/behat-gather-context-extension",
+    "description": "A Behat extension to automatically gather contexts",
+    "type": "behat-extension",
+    "license": "MIT",
+    "keywords": ["behat", "test", "extension", "gather", "context"],
+    "homepage": "https://github.com/Zayon/behat-gather-context-extension",
+    "autoload": {
+        "psr-4": {
+            "Zayon\\BehatGatherContextExtension\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zayon\\BehatGatherContextExtension\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pablo Godinez",
+            "email": "pablo.godinez@zayon.eu"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "behat/behat": "^3.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "symfony/process": "^5.4"
+    }
+}
