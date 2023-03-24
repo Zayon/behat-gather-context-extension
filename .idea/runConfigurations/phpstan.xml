@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="phpstan" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/tools/phpstan/vendor/bin/phpstan" scriptParameters="analyse -c tools/phpstan/phpstan.neon">
+    <CommandLine workingDirectory="$PROJECT_DIR$">
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="php:8.2-cli-alpine" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <method v="2" />
+  </configuration>
+</component>

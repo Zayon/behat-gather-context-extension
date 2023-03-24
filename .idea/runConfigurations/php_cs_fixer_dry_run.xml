@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="php-cs-fixer dry-run" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/tools/php-cs-fixer/vendor/bin/php-cs-fixer" scriptParameters="fix --config tools/php-cs-fixer/.php-cs-fixer.dist.php -v --dry-run">
+    <CommandLine workingDirectory="$PROJECT_DIR$">
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="php:8.2-cli-alpine" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <method v="2" />
+  </configuration>
+</component>

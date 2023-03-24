@@ -33,6 +33,7 @@ final class GatherContextReader implements ContextReader
      * @param string $contextClass
      *
      * @return Callee[]
+     *
      * @throws \ReflectionException
      */
     public function readContextCallees(ContextEnvironment $environment, $contextClass): array
