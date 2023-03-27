@@ -1,0 +1,6 @@
+.git* export-ignore
+tools export-ignore
+Makefile export-ignore
+behat.yml export-ignore
+tests export-ignore
+.idea export-ignore
